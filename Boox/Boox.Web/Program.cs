@@ -1,3 +1,6 @@
+using Boox.Infrastructure.Data;
+using Boox.Infrastructure.Extensions;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -7,7 +10,18 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services
+    .AddEntityFrameworkSqlite()
+    .AddDbContext<BooxContext>();
+
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var provider = scope.ServiceProvider;
+    var ctx = provider.GetRequiredService<BooxContext>();
+    ctx.SeedBooks();
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
