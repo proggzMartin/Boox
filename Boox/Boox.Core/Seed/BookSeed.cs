@@ -16,7 +16,7 @@ namespace Boox.Core.Seed
 
         static BookSeed()
         {
-            _authors = CreateStringList("Author", "joe", "kut" );
+            _authors = CreateStringList("Author", "joe", "kut", "Ralls, Kim" );
             _descriptions = CreateStringList("Description", "deploy", "applications" );
             _genres = CreateStringList("Genre", "com", "ter" );
             _ids = CreateStringList("B");
@@ -100,19 +100,25 @@ namespace Boox.Core.Seed
         }
 
         private static List<DateTime> CreatePublishedDates()
-        {
-            List<DateTime> result = new();
-
-            for (int i = 0; i < _listLengths; i++)
+            => new List<DateTime>
             {
-                //just take some time back.
-                var subtractDays = 60 + 4000 * r.NextDouble();
+                new DateTime(2021, 1, 1),
+                new DateTime(2021, 1, 13),
+                new DateTime(2021, 3, 3),
+                new DateTime(2021, 3, 15),
 
-                result.Add(DateTime.Now.Subtract(
-                    TimeSpan.FromDays(subtractDays)));
-            }
+                new DateTime(2020, 2, 1),
+                new DateTime(2020, 2, 2),
+                new DateTime(2020, 4, 1),
+                new DateTime(2020, 4, 26),
 
-            return result;
-        }
+                new DateTime(2019, 1, 1),
+                new DateTime(2018, 1, 1),
+                new DateTime(2017, 1, 1),
+                new DateTime(2016, 1, 1),
+
+                new DateTime(2015, 1, 1),
+            };
+
     }
 }

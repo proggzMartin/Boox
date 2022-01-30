@@ -2,7 +2,6 @@
 using Boox.Infrastructure.Data;
 using Core.Entities;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection;
 
 namespace Boox.Infrastructure.Repositories
 {
@@ -16,6 +15,8 @@ namespace Boox.Infrastructure.Repositories
         }
 
         public IEnumerable<Book> GetAll() => _ctx.Books.AsNoTracking();
+
+        
 
         public IEnumerable<Book> SortedByAuthor(string name)
         {
@@ -55,6 +56,45 @@ namespace Boox.Infrastructure.Repositories
                 ? books.OrderBy(x => x.Id)
                 : books.Where(x => x.Id.Contains(id, StringComparison.OrdinalIgnoreCase))
                     .OrderBy(x => x.Id);
+        }
+
+        public IEnumerable<Book> SortedByPrice(string input)
+        {
+            var books = GetAll();
+
+            if (input == null) return books.OrderBy(x => x.Price);
+
+            var inputs = input?.Split('&').Select(x => double.Parse(x)).ToList();
+
+            if (inputs != null && inputs.Count() > 0) 
+            {
+                books = books.Where(x => x.Price >= inputs[0] &&
+                    (inputs.Count() > 1 ? x.Price <= inputs[1] : true));
+            } 
+
+            return books.OrderBy(x => x.Price);
+        }
+
+        public IEnumerable<Book> SortedByPublished(int? year, int? month, int? day)
+        {
+            var books = GetAll();
+
+            if (year != null && year > 0)
+            {
+                books = books.Where(x => x.Published.Year == year);
+
+                if (month != null && month > 0)
+                {
+                    books = books.Where(x => x.Published.Month == month);
+
+                    if (day != null && day > 0)
+                    {
+                        books = books.Where(x => x.Published.Day == day);
+                    }
+                }
+            }
+
+            return books.OrderBy(x => x.Published);
         }
 
         public IEnumerable<Book> SortedByTitle(string title)
