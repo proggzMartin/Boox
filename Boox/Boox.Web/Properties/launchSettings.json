@@ -12,9 +12,9 @@
     "Boox.Web": {
       "commandName": "Project",
       "dotnetRunMessages": true,
-      "launchBrowser": true,
+      "launchBrowser": false, //TODO
       "launchUrl": "swagger",
-      "applicationUrl": "https://localhost:7052;http://localhost:5052",
+      "applicationUrl": "https://localhost:5000;http://localhost:5001",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

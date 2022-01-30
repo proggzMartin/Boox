@@ -1,5 +1,8 @@
+using Boox.Core.Interfaces;
 using Boox.Infrastructure.Data;
 using Boox.Infrastructure.Extensions;
+using Boox.Infrastructure.Repositories;
+using Core.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +16,8 @@ builder.Services.AddSwaggerGen();
 builder.Services
     .AddEntityFrameworkSqlite()
     .AddDbContext<BooxContext>();
+
+builder.Services.AddScoped<IBookRepo, BookRepo>();
 
 var app = builder.Build();
 
