@@ -9,7 +9,7 @@ namespace Boox.Infrastructure.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
-            //Place db-file at splution level
+            //Place db-file at solution level
             options.UseSqlite($"Data Source=../BooxDatabase.db");
         }
     }

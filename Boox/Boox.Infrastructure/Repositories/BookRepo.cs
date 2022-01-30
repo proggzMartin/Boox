@@ -77,24 +77,17 @@ namespace Boox.Infrastructure.Repositories
 
         public IEnumerable<Book> SortedByPublished(int? year, int? month, int? day)
         {
-            var books = GetAll();
-
-            if (year != null && year > 0)
-            {
-                books = books.Where(x => x.Published.Year == year);
-
-                if (month != null && month > 0)
-                {
-                    books = books.Where(x => x.Published.Month == month);
-
-                    if (day != null && day > 0)
-                    {
-                        books = books.Where(x => x.Published.Day == day);
-                    }
-                }
-            }
-
-            return books.OrderBy(x => x.Published);
+            return GetAll().Where(x =>
+                (year == null
+                    ? true
+                    : x.Published.Year == year)
+                    && (month == null
+                        ? true
+                        : x.Published.Month == month)
+                        && (day == null
+                            ? true
+                            : x.Published.Day == day))
+                .OrderBy(x => x.Published);
         }
 
         public IEnumerable<Book> SortedByTitle(string title)
