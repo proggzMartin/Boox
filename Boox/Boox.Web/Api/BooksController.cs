@@ -1,5 +1,5 @@
 ﻿using Boox.Core.Interfaces;
-using Core.Entities;
+using Boox.Core.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Boox.Web.Api
@@ -15,33 +15,34 @@ namespace Boox.Web.Api
             _booxRepo = booxRepo;
         }
 
-        private IActionResult CommonGetter(Func<IEnumerable<Book>> SpecificAction)
+        private IActionResult CommonGetter(
+            Func<IEnumerable<Book>> specificAction,
+            StatusCodeResult ifExceptionResult = null)
         {
             try
             {
-                return Ok(SpecificAction());
+                return Ok(specificAction());
             }
             catch
             {
                 return StatusCode(500);
-
             }
         }
 
         [HttpGet]
-        public IActionResult Get() 
+        public IActionResult Get()
             => CommonGetter(() => _booxRepo.GetAll());
 
         [HttpGet("author/{value?}")]
-        public IActionResult GetByAuthor(string? value) 
+        public IActionResult GetByAuthor(string? value)
             => CommonGetter(() => _booxRepo.SortedByAuthor(value));
 
         [HttpGet("description/{value?}")]
-        public IActionResult GetByDescription(string? value) 
+        public IActionResult GetByDescription(string? value)
             => CommonGetter(() => _booxRepo.SortedByDescription(value));
 
         [HttpGet("genre/{value?}")]
-        public IActionResult GetByGenre(string? value) 
+        public IActionResult GetByGenre(string? value)
             => CommonGetter(() => _booxRepo.SortedByGenre(value));
 
         [HttpGet("id/{value?}")]
@@ -64,5 +65,10 @@ namespace Boox.Web.Api
         public IActionResult GetByTitle(string? value)
             => CommonGetter(() => _booxRepo.SortedByTitle(value));
 
+        [HttpPut("{id}")]
+        public IActionResult PutBook([FromQuery] string id, Book book)
+        {
+            _booxRepo.UpdateBook()
+        }
     }
 }

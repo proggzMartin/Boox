@@ -1,4 +1,4 @@
-﻿using Core.Entities;
+﻿using Boox.Core.Models.Entities;
 
 namespace Boox.Core.Seed
 {

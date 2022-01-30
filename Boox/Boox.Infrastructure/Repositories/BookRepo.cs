@@ -1,6 +1,6 @@
 ﻿using Boox.Core.Interfaces;
+using Boox.Core.Models.Entities;
 using Boox.Infrastructure.Data;
-using Core.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Boox.Infrastructure.Repositories
@@ -15,8 +15,6 @@ namespace Boox.Infrastructure.Repositories
         }
 
         public IEnumerable<Book> GetAll() => _ctx.Books.AsNoTracking();
-
-        
 
         public IEnumerable<Book> SortedByAuthor(string name)
         {
@@ -62,15 +60,20 @@ namespace Boox.Infrastructure.Repositories
         {
             var books = GetAll();
 
-            if (input == null) return books.OrderBy(x => x.Price);
-
-            var inputs = input?.Split('&').Select(x => double.Parse(x)).ToList();
-
-            if (inputs != null && inputs.Count() > 0) 
+            if (input != null)
             {
-                books = books.Where(x => x.Price >= inputs[0] &&
-                    (inputs.Count() > 1 ? x.Price <= inputs[1] : true));
-            } 
+                var inputs = input?.Split('&').Select(x => double.Parse(x)).ToList();
+
+                if (inputs != null && inputs.Count() > 0)
+                {
+                    //First lower limit, then
+                    //if num of inputs > 1, upper limit too
+                    books = books.Where(x => x.Price >= inputs[0] &&
+                                            (inputs.Count() > 1
+                                                ? x.Price <= inputs[1]
+                                                : true));
+                }
+            }
 
             return books.OrderBy(x => x.Price);
         }
@@ -98,6 +101,16 @@ namespace Boox.Infrastructure.Repositories
                 ? books.OrderBy(x => x.Title)
                 : books.Where(x => x.Title.Contains(title, StringComparison.OrdinalIgnoreCase))
                     .OrderBy(x => x.Title);
+        }
+
+        public void AddBook(Book book)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateBook(Book book)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -1,11 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Core.Entities
+﻿namespace Boox.Core.Models
 {
-    public class Book
+    /// <summary>
+    /// Purpose of class - decrease amount of copypasted
+    /// properties when creating BookDto.
+    /// Abstract - should always be iherited by using class.
+    /// </summary>
+    public abstract class BookBase
     {
-        [Key]
-        public string Id { get; set; }
         public string Author { get; set; }
         public string Description { get; set; }
         public string Genre { get; set; }
