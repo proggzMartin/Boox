@@ -1,8 +1,8 @@
 using Boox.Core.Interfaces;
+using Boox.Core.Services;
 using Boox.Infrastructure.Data;
 using Boox.Infrastructure.Extensions;
 using Boox.Infrastructure.Repositories;
-using Core.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +18,8 @@ builder.Services
     .AddDbContext<BooxContext>();
 
 builder.Services.AddScoped<IBookRepo, BookRepo>();
+builder.Services.AddScoped<IBookService, BookService>();
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();
 

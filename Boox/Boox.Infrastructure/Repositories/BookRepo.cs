@@ -14,11 +14,16 @@ namespace Boox.Infrastructure.Repositories
             _ctx = ctx;
         }
 
-        public IEnumerable<Book> GetAll() => _ctx.Books.AsNoTracking();
+        public IEnumerable<Book> GetAllNoTracking() => _ctx.Books.AsNoTracking();
+
+        public Book GetTrackedById(string id) => _ctx.Books.FirstOrDefault(x => x.Id.Equals(id));
+
+        public bool BookExists(string id) 
+            => _ctx.Books.Any(x => x.Id.Equals(id));
 
         public IEnumerable<Book> SortedByAuthor(string name)
         {
-            var books = GetAll().ToList();
+            var books = GetAllNoTracking().ToList();
 
             return string.IsNullOrWhiteSpace(name) 
                 ? books.OrderBy(x => x.Author) 
@@ -28,7 +33,7 @@ namespace Boox.Infrastructure.Repositories
 
         public IEnumerable<Book> SortedByDescription(string description)
         {
-            var books = GetAll();
+            var books = GetAllNoTracking();
 
             return string.IsNullOrWhiteSpace(description)
                 ? books.OrderBy(x => x.Description)
@@ -38,7 +43,7 @@ namespace Boox.Infrastructure.Repositories
 
         public IEnumerable<Book> SortedByGenre(string genre)
         {
-            var books = GetAll();
+            var books = GetAllNoTracking();
 
             return string.IsNullOrWhiteSpace(genre)
                 ? books.OrderBy(x => x.Genre)
@@ -48,7 +53,7 @@ namespace Boox.Infrastructure.Repositories
 
         public IEnumerable<Book> SortedById(string id)
         {
-            var books = GetAll();
+            var books = GetAllNoTracking();
 
             return string.IsNullOrWhiteSpace(id)
                 ? books.OrderBy(x => x.Id)
@@ -58,7 +63,7 @@ namespace Boox.Infrastructure.Repositories
 
         public IEnumerable<Book> SortedByPrice(string input)
         {
-            var books = GetAll();
+            var books = GetAllNoTracking();
 
             if (input != null)
             {
@@ -80,7 +85,7 @@ namespace Boox.Infrastructure.Repositories
 
         public IEnumerable<Book> SortedByPublished(int? year, int? month, int? day)
         {
-            return GetAll().Where(x =>
+            return GetAllNoTracking().Where(x =>
                 (year == null
                     ? true
                     : x.Published.Year == year)
@@ -95,7 +100,7 @@ namespace Boox.Infrastructure.Repositories
 
         public IEnumerable<Book> SortedByTitle(string title)
         {
-            var books = GetAll();
+            var books = GetAllNoTracking();
 
             return string.IsNullOrWhiteSpace(title)
                 ? books.OrderBy(x => x.Title)
@@ -103,14 +108,16 @@ namespace Boox.Infrastructure.Repositories
                     .OrderBy(x => x.Title);
         }
 
-        public void AddBook(Book book)
-        {
-            throw new NotImplementedException();
-        }
-
         public void UpdateBook(Book book)
         {
-            throw new NotImplementedException();
+            _ctx.Books.Update(book);
+            _ctx.SaveChanges();
+        }
+
+        public void PostBook(Book book)
+        {
+            _ctx.Books.Add(book);
+            _ctx.SaveChanges();
         }
     }
 }

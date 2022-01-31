@@ -1,4 +1,5 @@
 ﻿using Boox.Core.Interfaces;
+using Boox.Core.Models.Dtos;
 using Boox.Core.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,15 +10,16 @@ namespace Boox.Web.Api
     public class BooksController : ControllerBase
     {
         private IBookRepo _booxRepo { get; }
+        private IBookService _bookService { get; }
 
-        public BooksController(IBookRepo booxRepo)
+        public BooksController(IBookRepo bookRepo, IBookService bookService)
         {
-            _booxRepo = booxRepo;
+            _booxRepo = bookRepo;
+            _bookService = bookService;
         }
 
         private IActionResult CommonGetter(
-            Func<IEnumerable<Book>> specificAction,
-            StatusCodeResult ifExceptionResult = null)
+            Func<IEnumerable<Book>> specificAction)
         {
             try
             {
@@ -31,7 +33,7 @@ namespace Boox.Web.Api
 
         [HttpGet]
         public IActionResult Get()
-            => CommonGetter(() => _booxRepo.GetAll());
+            => CommonGetter(() => _booxRepo.GetAllNoTracking());
 
         [HttpGet("author/{value?}")]
         public IActionResult GetByAuthor(string? value)
@@ -66,9 +68,22 @@ namespace Boox.Web.Api
             => CommonGetter(() => _booxRepo.SortedByTitle(value));
 
         [HttpPut("{id}")]
-        public IActionResult PutBook([FromQuery] string id, Book book)
+        public IActionResult PutBook(string id, [FromBody] BookDto book)
         {
-            _booxRepo.UpdateBook()
+            if (!_booxRepo.BookExists(id))
+                return NotFound($"Book with entered Id \"{id}\" not found");
+
+            _bookService.UpdateBook(id, book);
+
+            return Ok();
+        }
+
+        [HttpPost]
+        public IActionResult PostBook([FromBody] BookDto book)
+        {
+            _bookService.PostBook(book);
+
+            return Ok();
         }
     }
 }
