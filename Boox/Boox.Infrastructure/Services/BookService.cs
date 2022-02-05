@@ -2,8 +2,9 @@
 using Boox.Core.Interfaces;
 using Boox.Core.Models.Dtos;
 using Boox.Core.Models.Entities;
+using Boox.Infrastructure.Exceptions;
 
-namespace Boox.Core.Services
+namespace Boox.Infrastructure.Services
 {
     public class BookService : IBookService
     {
@@ -16,12 +17,22 @@ namespace Boox.Core.Services
             _bookRepo = bookRepo;
         }
 
-        public void UpdateBook(string id, BookDto dto)
+        /// <summary>
+        /// Update book with specific Id in db.
+        /// If Id doesnt exist, nothing happens.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="dto"></param>
+        /// <exception cref="BookNotFoundException">Thrown when book of input Id isn't found.</exception>
+        public void BookUpdated(string id, BookDto dto)
         {
             var entity = _bookRepo.GetTrackedById(id);
 
+            if (entity == null)
+                throw new BookNotFoundException($"Unable to update Book with Id {id}, it wasn't found");
+
             var book = _mapper.Map<Book>(dto);
-            
+
             entity.Author = dto.Author;
             entity.Description = dto.Description;
             entity.Genre = dto.Genre;

@@ -1,4 +1,5 @@
 ﻿using Boox.Core.Models.Entities;
+using Boox.Infrastructure.Exceptions;
 using Boox.Infrastructure.Repositories;
 using System;
 using System.Collections.Generic;

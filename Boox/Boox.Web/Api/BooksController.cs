@@ -1,6 +1,7 @@
 ﻿using Boox.Core.Interfaces;
 using Boox.Core.Models.Dtos;
 using Boox.Core.Models.Entities;
+using Boox.Infrastructure.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Boox.Web.Api
@@ -52,7 +53,7 @@ namespace Boox.Web.Api
             => CommonGetter(() => _booxRepo.SortedById(value));
 
         //According to specification, input values aren't querystrings, 
-        //as it doesn't contain any '?' : https://host:port/api/books/price/30.0&35.0
+        //doesn't contain any '?' e.g. https://host:port/api/books/price/30.0&35.0
         //https://www.codeproject.com/Questions/886316/Querystring-qith-out-mark-is-possible-in-asp-Net
         //"The "?" character is the indicator to a URL processor that what follows it is the query detail, and not part of the URL itself."
         [HttpGet("price/{value?}")]
@@ -70,10 +71,17 @@ namespace Boox.Web.Api
         [HttpPut("{id}")]
         public IActionResult PutBook(string id, [FromBody] BookDto book)
         {
-            if (!_booxRepo.BookExists(id))
-                return NotFound($"Book with entered Id \"{id}\" not found");
-
-            _bookService.UpdateBook(id, book);
+            try
+            {
+                _bookService.BookUpdated(id, book);
+            }
+            catch (BookNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            } catch 
+            {
+                return StatusCode(500, "Server error");
+            }
 
             return Ok();
         }
