@@ -2,6 +2,7 @@
 using Boox.Core.Models.Entities;
 using Boox.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 namespace Boox.Infrastructure.Repositories
 {
@@ -67,20 +68,30 @@ namespace Boox.Infrastructure.Repositories
 
             if (input != null)
             {
-                var inputs = input?.Split('&').Select(x => double.Parse(x)).ToList();
+                var inputs = input?
+                    .Split('&')
+                    .Select(x => double.Parse(x, CultureInfo.InvariantCulture))
+                    .ToList();
 
-                if (inputs != null && inputs.Count() > 0)
+                switch(inputs.Count())
                 {
-                    //First lower limit, then
-                    //if num of inputs > 1, upper limit too
-                    books = books.Where(x => x.Price >= inputs[0] &&
-                                            (inputs.Count() > 1
-                                                ? x.Price <= inputs[1]
-                                                : true));
+                    case 0:
+                        break;
+                    case 1:
+                        books = books.Where(x => x.Price == inputs[0])
+                            .OrderBy(x => x.Price);
+                        break;
+                    //Anything larger than 1
+                    default:
+                        books = books.Where(x => x.Price >= inputs[0] &&
+                                                x.Price <= inputs[1])
+                            .OrderBy(x => x.Price);
+                        break;
                 }
             }
 
             return books.OrderBy(x => x.Price);
+
         }
 
         public IEnumerable<Book> SortedByPublished(int? year, int? month, int? day)

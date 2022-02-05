@@ -7,19 +7,18 @@ namespace Boox.Infrastructure.Data
     {
         public DbSet<Book> Books { get; set; }
 
+        //Constructor for DI
+        public BooxContext()
+        { }
+
+        //Constructor for tests
+        public BooxContext(DbContextOptions<BooxContext> options) : base(options)
+        { }
+
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
             //Place db-file at solution level
             options.UseSqlite($"Data Source=../BooxDatabase.db");
         }
-
-        //protected override void OnModelCreating(ModelBuilder modelBuilder)
-        //{
-        //    modelBuilder.Entity<Book>()
-        //        .Property(x => x.Id)
-        //        .HasComputedColumnSql("B")
-
-        //    base.OnModelCreating(modelBuilder);
-        //}
     }
 }

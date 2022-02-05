@@ -10,9 +10,9 @@ namespace Boox.Core.Seed
         private static Random r = new();
 
         //prices, 
-        private static List<string> _authors, _descriptions, _genres, _ids, _titles;
-        private static List<DateTime> _publishedDates;
-        private static List<double> _prices;
+        public static List<string> _authors, _descriptions, _genres, _ids, _titles;
+        public static List<DateTime> _publishedDates;
+        public static List<double> _prices;
 
         static BookSeed()
         {
