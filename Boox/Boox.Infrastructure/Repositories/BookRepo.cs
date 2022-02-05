@@ -119,16 +119,19 @@ namespace Boox.Infrastructure.Repositories
                     .OrderBy(x => x.Title);
         }
 
-        public void UpdateBook(Book book)
+        public Book UpdateBook(Book book)
         {
-            _ctx.Books.Update(book);
+            var updatedBook = _ctx.Books.Update(book);
             _ctx.SaveChanges();
+            return updatedBook.Entity;
         }
 
-        public void PostBook(Book book)
+        public Book PostBook(Book book)
         {
-            _ctx.Books.Add(book);
+            var newBook = _ctx.Books.Add(book);
             _ctx.SaveChanges();
+
+            return newBook.Entity;
         }
     }
 }

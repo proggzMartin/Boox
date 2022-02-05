@@ -14,7 +14,7 @@ namespace Boox.Core.Interfaces
         public IEnumerable<Book> SortedById(string name);
         public IEnumerable<Book> SortedByPublished(int? year, int? month, int? day);
         public IEnumerable<Book> SortedByTitle(string name);
-        public void UpdateBook(Book book);
-        public void PostBook(Book book);
+        public Book UpdateBook(Book book);
+        public Book PostBook(Book book);
     }
 }

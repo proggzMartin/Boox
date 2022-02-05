@@ -262,6 +262,7 @@ namespace Boox.Tests.UnitTests
         }
         #endregion
 
+        //I should be able to ask for a price range or a specific price.
         #region SortPrices
         [Fact]
         public void SortedByPrice_1_InputNull_OrderAll()
@@ -375,6 +376,9 @@ namespace Boox.Tests.UnitTests
         }
         #endregion
 
+        //I should be able to ask for published_date or part of it, that means all books,
+        //books from a certain year, books from a certain year-month or books from a
+        //certain year-month-day.
         #region SortPublishedDate
         [Fact]
         public void SortedByPublishedDate_1_InputNull_OrderAll()
@@ -516,14 +520,79 @@ namespace Boox.Tests.UnitTests
             }
         }
         #endregion
-        //I should be able to ask for a price range or a specific price.
-
-        //I should be able to ask for published_date or part of it, that means all books,
-        //books from a certain year, books from a certain year-month or books from a
-        //certain year-month-day.
-
-        //I should be able to edit any field for any book using the book ID as a search parameter.
 
         //I should be able to create a new book.
+        #region CreateBook
+        [Fact]
+        public void CreateBook_1_ShouldCreate()
+        {
+            Book newbook = new()
+            {
+                Author = "auth1",
+                Description = "desc1",
+                Genre = "genre1",
+                Price = 30,
+                Published = DateTime.Now,
+                Title = "title1"
+            };
+
+            var ctx = CreateBooxContext();
+            var bookRepo = new BookRepo(ctx);
+
+            var returnedBook = bookRepo.PostBook(newbook);
+
+            var getBook = ctx.Books.FirstOrDefault(x => x.Id.Equals(returnedBook.Id));
+
+            Assert.NotNull(getBook);
+            Assert.Equal(getBook.Author, newbook.Author);
+            Assert.Equal(getBook.Description, newbook.Description);
+            Assert.Equal(getBook.Genre, newbook.Genre);
+            Assert.Equal(getBook.Price, newbook.Price);
+            Assert.Equal(getBook.Published, newbook.Published);
+            Assert.Equal(getBook.Title, newbook.Title);
+        }
+        #endregion
+
+        //I should be able to edit any field for any book using the book ID as a search parameter.
+        #region UpdateBook
+        [Fact]
+        public void UpdateBook_1_ShouldUpdate()
+        {
+            Book oldbook = new()
+            {
+                Author = "auth1",
+                Description = "desc1",
+                Genre = "genre1",
+                Price = 30,
+                Published = DateTime.Now,
+                Title = "title1"
+            };
+
+            Book bookToUpdate = new()
+            {
+                Author = "updatedauth1",
+                Description = "updateddesc1",
+                Genre = "updatedgenre1",
+                Price = 40,
+                Published = DateTime.Now.AddMinutes(5),
+                Title = "updatedtitle1"
+            };
+
+            var ctx = CreateBooxContext(new List<Book> { oldbook });
+            var bookRepo = new BookRepo(ctx);
+
+            var updatedBook = bookRepo.UpdateBook(bookToUpdate);
+
+            var getBook = ctx.Books.FirstOrDefault(x => x.Id.Equals(updatedBook.Id));
+
+            Assert.NotNull(getBook);
+            Assert.Equal(getBook.Author, bookToUpdate.Author);
+            Assert.Equal(getBook.Description, bookToUpdate.Description);
+            Assert.Equal(getBook.Genre, bookToUpdate.Genre);
+            Assert.Equal(getBook.Price, bookToUpdate.Price);
+            Assert.Equal(getBook.Published, bookToUpdate.Published);
+            Assert.Equal(getBook.Title, bookToUpdate.Title);
+        }
+        #endregion
     }
 }
