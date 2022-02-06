@@ -78,14 +78,12 @@ namespace Boox.Infrastructure.Repositories
                     case 0:
                         break;
                     case 1:
-                        books = books.Where(x => x.Price == inputs[0])
-                            .OrderBy(x => x.Price);
+                        books = books.Where(x => x.Price == inputs[0]);
                         break;
                     //Anything larger than 1
                     default:
                         books = books.Where(x => x.Price >= inputs[0] &&
-                                                x.Price <= inputs[1])
-                            .OrderBy(x => x.Price);
+                                                x.Price <= inputs[1]);
                         break;
                 }
             }
