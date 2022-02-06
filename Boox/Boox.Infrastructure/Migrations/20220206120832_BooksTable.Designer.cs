@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Boox.Infrastructure.Migrations
 {
     [DbContext(typeof(BooxContext))]
-    [Migration("20220206112215_BooksTable")]
+    [Migration("20220206120832_BooksTable")]
     partial class BooksTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,9 +21,9 @@ namespace Boox.Infrastructure.Migrations
 
             modelBuilder.Entity("Boox.Core.Models.Entities.Book", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Author")
                         .IsRequired()

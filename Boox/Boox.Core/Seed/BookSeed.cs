@@ -31,7 +31,7 @@ namespace Boox.Core.Seed
                 Books.Add(
                     new Book()
                     {
-                        //Id = _ids[i], //todo
+                        Id = _ids[i],
                         Author = _authors[i],
                         Description = _descriptions[i],
                         Genre = _genres[i],

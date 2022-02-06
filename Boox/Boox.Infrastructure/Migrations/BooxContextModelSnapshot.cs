@@ -19,9 +19,9 @@ namespace Boox.Infrastructure.Migrations
 
             modelBuilder.Entity("Boox.Core.Models.Entities.Book", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Author")
                         .IsRequired()

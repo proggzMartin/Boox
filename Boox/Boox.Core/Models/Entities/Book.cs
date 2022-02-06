@@ -9,6 +9,6 @@ namespace Boox.Core.Models.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         //Unfortunately, was not successful in autogenerating
         //incrementing Id "B13", "B14" ... 
-        public int Id { get; set; }
+        public string Id { get; set; }
     }
 }
