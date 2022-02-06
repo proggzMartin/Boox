@@ -1,8 +1,8 @@
 using Boox.Core.Interfaces;
+using Boox.Core.Services;
 using Boox.Infrastructure.Data;
 using Boox.Infrastructure.Extensions;
 using Boox.Infrastructure.Repositories;
-using Boox.Infrastructure.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -58,7 +58,7 @@ namespace Boox.Infrastructure.Repositories
 
             return string.IsNullOrWhiteSpace(id)
                 ? books.OrderBy(x => x.Id)
-                : books.Where(x => x.Id.Contains(id, StringComparison.OrdinalIgnoreCase))
+                : books//.Where(x => x.Id.Contains(id, StringComparison.OrdinalIgnoreCase)) TODO
                     .OrderBy(x => x.Id);
         }
 
@@ -94,6 +94,14 @@ namespace Boox.Infrastructure.Repositories
 
         }
 
+        /// <summary>
+        /// Gets books by inputs and orders the result by published-property.
+        /// If all input fields are null then all books are returned.
+        /// </summary>
+        /// <param name="year">Get books published a given year</param>
+        /// <param name="month">Get books published a given month.</param>
+        /// <param name="day">Get books published a given day.</param>
+        /// <returns></returns>
         public IEnumerable<Book> SortedByPublished(int? year, int? month, int? day)
         {
             return GetAllNoTracking().Where(x =>

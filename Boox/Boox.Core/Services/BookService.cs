@@ -1,11 +1,15 @@
 ﻿using AutoMapper;
+using Boox.Core.Exceptions;
 using Boox.Core.Interfaces;
 using Boox.Core.Models.Dtos;
 using Boox.Core.Models.Entities;
-using Boox.Infrastructure.Exceptions;
 
-namespace Boox.Infrastructure.Services
+namespace Boox.Core.Services
 {
+    /// <summary>
+    /// BookService maps Dto -> Entity
+    /// Performs Create- and Update-calls for books.
+    /// </summary>
     public class BookService : IBookService
     {
         private IMapper _mapper { get; }
@@ -43,6 +47,10 @@ namespace Boox.Infrastructure.Services
             _bookRepo.UpdateBook(entity);
         }
 
+        /// <summary>
+        /// Create a new book.
+        /// </summary>
+        /// <param name="dto"></param>
         public void PostBook(BookDto dto)
         {
             var newbook = _mapper.Map<Book>(dto);

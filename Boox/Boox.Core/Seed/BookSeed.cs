@@ -31,7 +31,7 @@ namespace Boox.Core.Seed
                 Books.Add(
                     new Book()
                     {
-                        Id = _ids[i],
+                        //Id = _ids[i], //todo
                         Author = _authors[i],
                         Description = _descriptions[i],
                         Genre = _genres[i],
@@ -45,11 +45,12 @@ namespace Boox.Core.Seed
 
         /// <summary>
         /// Fill out string-collection for seed in order to prevent
-        /// copypaste code and get coherent structure
+        /// copypaste code and get a more coherent structure
         /// </summary>
-        /// <param name="customNames">Actual names to add into array. Adds from start</param>
-        /// <param name="prefixName">The prefix before count-number</param>
-        /// <param name="resultLength">total length of resulting collection</param>
+        /// <param name="prefixName">Prefix for non-specific names. Incremented with number.</param>
+        /// <param name="customNames"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException"></exception>
         private static List<string> CreateStringList(string prefixName, 
             params string[] customNames)
         {
@@ -68,7 +69,7 @@ namespace Boox.Core.Seed
 
             var customNamesDistortion = new List<string>();
 
-            //Create 'distortion' in names
+            //Create some 'distortion' in the specific names
             foreach(var c in customNames)
             {
                 customNamesDistortion.Add(c + 'B');
@@ -119,6 +120,5 @@ namespace Boox.Core.Seed
 
                 new DateTime(2015, 1, 1),
             };
-
     }
 }

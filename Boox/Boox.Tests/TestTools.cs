@@ -1,19 +1,14 @@
-﻿using AutoMapper;
-using Boox.Core;
-using Boox.Core.Models.Entities;
+﻿using Boox.Core.Models.Entities;
 using Boox.Infrastructure.Data;
-using Boox.Infrastructure.Repositories;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Boox.Tests
 {
     public static class TestTools
     {
-        public static void AddTestDataToContext(BooxContext context, List<Book> books)
+        public static void AddTestBooksToContext(BooxContext context, List<Book> books)
         {
             //DB doesn't allow null of any string-values in book-object.
             //fill out possible null-values if any amongst the input-books
@@ -37,35 +32,12 @@ namespace Boox.Tests
         /// <returns></returns>
         static string SetTempValIfNull(string input) => string.IsNullOrEmpty(input) ? "temp" : input;
 
-        private static BooxContext CreateBooxContext()
-        {
-            SqliteConnection connection = new SqliteConnection("DataSource=:memory:");
-            BooxContext ctx;
-
-            try
-            {
-                connection.Open();
-
-                var options = new DbContextOptionsBuilder<BooxContext>()
-                    .UseSqlite(connection)
-                    .Options;
-
-                ctx = new BooxContext(options);
-            }
-            finally
-            {
-                connection.Close();
-                connection.Dispose();
-            }
-
-            //InMemDb's may cling on in memory if not deleted properly
-            //ctx.Database.EnsureDeleted();
-            ctx.Database.EnsureCreated();
-
-            return ctx;
-        }
-
-        public static BooxContext CreateInMemBooxContext()
+        /// <summary>
+        /// Creates Inmemory db for BooxContext
+        /// </summary>
+        /// <param name="testBooks">Initial books for the database table</param>
+        /// <returns></returns>
+        public static BooxContext CreateInMemBooxContext(List<Book> testBooks = null)
         {
             var connection = new SqliteConnection("DataSource=:memory:");
             connection.Open();
@@ -82,6 +54,11 @@ namespace Boox.Tests
             //Ensure db is empty.
             ctx.Database.EnsureDeleted();
             ctx.Database.EnsureCreated();
+
+            if (testBooks != null)
+            {
+                AddTestBooksToContext(ctx, testBooks);
+            }
 
             return ctx;
         }

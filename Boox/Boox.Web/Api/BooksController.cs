@@ -1,7 +1,7 @@
-﻿using Boox.Core.Interfaces;
+﻿using Boox.Core.Exceptions;
+using Boox.Core.Interfaces;
 using Boox.Core.Models.Dtos;
 using Boox.Core.Models.Entities;
-using Boox.Infrastructure.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Boox.Web.Api
@@ -19,6 +19,12 @@ namespace Boox.Web.Api
             _bookService = bookService;
         }
 
+        /// <summary>
+        /// Common method for get-methods, in attempt to
+        /// avoid copypaste-code and shrink amount of code.
+        /// </summary>
+        /// <param name="specificAction"></param>
+        /// <returns></returns>
         private IActionResult CommonGetter(
             Func<IEnumerable<Book>> specificAction)
         {

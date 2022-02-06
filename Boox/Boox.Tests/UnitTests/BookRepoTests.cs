@@ -1,5 +1,4 @@
 ﻿using Boox.Core.Models.Entities;
-using Boox.Infrastructure.Exceptions;
 using Boox.Infrastructure.Repositories;
 using System;
 using System.Collections.Generic;
@@ -8,7 +7,7 @@ using Xunit;
 
 namespace Boox.Tests.UnitTests
 {
-    public class BookRepoTests : AbstractRepoTest
+    public class BookRepoTests : AbstractBookRepoTest
     {
         #region SortAuthor
         /// <summary>
@@ -537,7 +536,7 @@ namespace Boox.Tests.UnitTests
                 Title = "title1"
             };
 
-            var ctx = CreateBooxContext();
+            var ctx = TestTools.CreateInMemBooxContext();
             var bookRepo = new BookRepo(ctx);
 
             var returnedBook = bookRepo.PostBook(newbook);
@@ -579,7 +578,7 @@ namespace Boox.Tests.UnitTests
                 Title = "updatedtitle1"
             };
 
-            var ctx = CreateBooxContext(new List<Book> { oldbook });
+            var ctx = TestTools.CreateInMemBooxContext(new List<Book> { oldbook });
             var bookRepo = new BookRepo(ctx);
 
             var updatedBook = bookRepo.UpdateBook(bookToUpdate);

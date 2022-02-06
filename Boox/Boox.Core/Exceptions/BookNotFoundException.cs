@@ -1,4 +1,4 @@
-﻿namespace Boox.Infrastructure.Exceptions
+﻿namespace Boox.Core.Exceptions
 {
     [Serializable]
     public class BookNotFoundException : Exception

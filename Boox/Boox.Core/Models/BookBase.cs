@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Boox.Core.Models
+﻿namespace Boox.Core.Models
 {
+    //Class properties in common for Book
+    //and BookDto. To avoid Copypaste, uses
+    //this as parentclass. Abstract since children 
+    //should be used instead.
+    //Property Published is virtual for BookDto to
+    //override and combine with JsonPropertyName-attribute.
     public abstract class BookBase
     {
         public string Author { get; set; }
