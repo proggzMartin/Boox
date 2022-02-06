@@ -1,4 +1,5 @@
 ﻿using Boox.Core.Interfaces;
+using Boox.Core.Models;
 using Boox.Core.Models.Entities;
 using Boox.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
@@ -55,11 +56,13 @@ namespace Boox.Infrastructure.Repositories
         public IEnumerable<Book> SortedById(string id)
         {
             var books = GetAllNoTracking();
+            var comparer = new BookIdComparer();
 
             return string.IsNullOrWhiteSpace(id)
-                ? books.OrderBy(x => x.Id)
+                ? books.OrderBy(x => x.Id, comparer)
                 : books.Where(x => x.Id.Contains(id, StringComparison.OrdinalIgnoreCase))
-                    .OrderBy(x => x.Id);
+                    .OrderBy(x => x.Id, comparer)
+                    .ToList();
         }
 
         public IEnumerable<Book> SortedByPrice(string input)
