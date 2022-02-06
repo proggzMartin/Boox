@@ -2,8 +2,8 @@
 {
     //Class properties in common for Book
     //and BookDto. To avoid Copypaste, uses
-    //this as parentclass. Abstract since children 
-    //should be used instead.
+    //this as parentclass for both Dto and entity.
+    //Abstract since children should be used instead.
     //Property Published is virtual for BookDto to
     //override and combine with JsonPropertyName-attribute.
     public abstract class BookBase
