@@ -58,7 +58,7 @@ namespace Boox.Infrastructure.Repositories
 
             return string.IsNullOrWhiteSpace(id)
                 ? books.OrderBy(x => x.Id)
-                : books//.Where(x => x.Id.Contains(id, StringComparison.OrdinalIgnoreCase)) TODO
+                : books.Where(x => x.Id.Contains(id, StringComparison.OrdinalIgnoreCase))
                     .OrderBy(x => x.Id);
         }
 
