@@ -4,28 +4,26 @@ namespace Boox.Core.Models
 {
     public class BookIdComparer : IComparer<string>
     {
-        //public int Compare(Book? x, Book? y)
-        //{
-        //    int xId, yId;
-
-        //    var xParseOk = int.TryParse(x.Id.Substring(1), out xId);
-        //    var yParseOk = int.TryParse(x.Id.Substring(1), out yId);
-
-        //    return xParseOk && yParseOk
-        //                ? xId - yId //if both parses ok, do comparison
-        //                : xParseOk
-        //                    ? 1 //if only xParseOk (implicitly), then xId first
-        //                    : yParseOk
-        //                        ? -1 //if only yParseOk (implicitly), then xId first
-        //                        : 0; //else, both failed; do nothing.
-        //}
-
+        /// <summary>
+        /// Compares bookId's.
+        /// It is expected that the first character is a letter
+        /// </summary>
+        /// <param name="leftKey"></param>
+        /// <param name="rightKey"></param>
+        /// <returns></returns>
         public int Compare(string? leftKey, string? rightKey)
         {
-            int leftId, rightId;
+            int leftId = 0, rightId = 0;
+            bool leftParseOk = false, rightParseOk = false;
 
-            var leftParseOk = int.TryParse(leftKey.Substring(1), out leftId);
-            var rightParseOk = int.TryParse(rightKey.Substring(1), out rightId);
+            try
+            {
+                leftParseOk = int.TryParse(leftKey.Substring(1), out leftId);
+            } catch{}
+            try
+            {
+                rightParseOk = int.TryParse(rightKey.Substring(1), out rightId);
+            } catch{}
 
             var r = leftParseOk && rightParseOk
                         ? leftId - rightId //if both parses ok, do comparison
@@ -37,5 +35,6 @@ namespace Boox.Core.Models
 
             return r;
         }
+
     }
 }

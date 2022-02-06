@@ -18,7 +18,8 @@ namespace Boox.Infrastructure.Repositories
 
         public IEnumerable<Book> GetAllNoTracking() => _ctx.Books.AsNoTracking();
 
-        public Book GetTrackedById(string id) => _ctx.Books.FirstOrDefault(x => x.Id.Equals(id));
+        public Book GetTrackedById(string id) => _ctx.Books
+            .FirstOrDefault(x => x.Id.ToLower().Contains(id.ToLower()) );
 
         public bool BookExists(string id) 
             => _ctx.Books.Any(x => x.Id.Equals(id));

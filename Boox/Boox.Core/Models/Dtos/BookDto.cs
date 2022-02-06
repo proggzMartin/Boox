@@ -6,7 +6,5 @@ namespace Boox.Core.Models.Dtos
     {
         [JsonPropertyName("publish_date")]
         public override DateTime Published { get; set; }
-
-        public string Id { get; set; }
     }
 }
